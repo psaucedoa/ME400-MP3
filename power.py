@@ -4,19 +4,20 @@ import pyromat as pm
 import matplotlib.pyplot as plt
 import pandas as pd
 # %%
-rpm = 6000
-cc = 80
-vol_l = 80/1000
-vol = vol_l/1000
-p1 = 101325 #[pa]
-gamma = 1.4 #assuming diatomic ideal
-r = 6
-t1 = 298.15
-Q = 120000 #[kj/kg]
-bar1 = p1/100000
-R = 8314 #[kJ/mol]
-H2 = pm.get('ig.H2')
-O2 = pm.get('ig.O2')
+rpm     = 6000          #operating revolutions per minute
+cc      = 80            #[cc] engine size
+vol_l   = 80/1000       #[L] engine volume in liters
+vol     = vol_l/1000    #[m^3] engine volume in meters cubed
+gamma   = 1.4           #assuming diatomic ideal
+r       = 6             #compression ratio
+t1      = 298.15        #[K] ambient operating temp
+Q       = 120000        #[kj/kg]
+p1      = 101325        #[pa] operating pressure (ambient)
+bar1    = p1/100000     #[bar] operating pressure (ambient) bars
+R       = 8314          #[kJ/mol] universal gas constant
+
+H2      = pm.get('ig.H2') #getting ideal has H2 data from Pyromat
+O2      = pm.get('ig.O2') #getting ideal has O2 data from Pyromat
 
 #%%
 rho_H2 = H2.d(T=298.15, p=bar1)
