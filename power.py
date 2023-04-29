@@ -4,6 +4,12 @@ import pyromat as pm
 import matplotlib.pyplot as plt
 import pandas as pd
 # %%
+#Force the unit system into kJ,kg,KPa,K
+pm.config['unit_energy'] = 'kJ'
+pm.config['unit_matter'] = 'kg'
+pm.config['unit_pressure'] = 'kPa'
+pm.config['unit_temperature'] = 'K'
+
 rpm     = 6000          #operating revolutions per minute
 cc      = 80            #[cc] engine size
 vol_l   = 80/1000       #[L] engine volume in liters
@@ -12,45 +18,119 @@ gamma   = 1.4           #assuming diatomic ideal
 r       = 6             #compression ratio
 t1      = 298.15        #[K] ambient operating temp
 Q       = 120000        #[kj/kg]
-p1      = 101325        #[pa] operating pressure (ambient)
-bar1    = p1/100000     #[bar] operating pressure (ambient) bars
+p1      = 101.325        #[kPa] operating pressure (ambient)
 R       = 8314          #[kJ/mol] universal gas constant
 
 H2      = pm.get('ig.H2') #getting ideal has H2 data from Pyromat
 O2      = pm.get('ig.O2') #getting ideal has O2 data from Pyromat
 
 #%%
-rho_H2 = H2.d(T=298.15, p=bar1)
-rho_O2 = O2.d(T=298.15, p=bar1)
+rho_H2 = H2.d(T=298.15, p=p1) #density of hydrogen at STP
+rho_O2 = O2.d(T=298.15, p=p1) #density of oxygen at STP
 # %%
-mw_H2 = H2.mw(T=298.15, p=bar1)
-mw_O2 = O2.mw(T=298.15, p=bar1)
-af_ratio = mw_O2 / (2*mw_H2 )
+mw_H2 = H2.mw(T=298.15, p=p1) #molecular weight of H2 at STP
+mw_O2 = O2.mw(T=298.15, p=p1) #molecular weight of H2 at STP
+af_ratio = mw_O2 / (2*mw_H2 ) #air fuel ratio
 # %%
-n = p1*vol/(R*t1)
+n = p1*vol/(R*t1) 
+#idela gas law to find number of moles
 
-mol_H2 = 2*n/3
+mol_H2 = 2*n/3 
+#two thrids of those moles will be H2
+
 P_partial_H2 = p1*2/3
-n_H2 = P_partial_H2*vol/(R*t1)
-#vol_H2 = #(1/af_ratio) * vol
-kg_H2 = mw_H2*n_H2
+#partial pressure of H2 is 2/3 total pressure
 
-#vol_O2 = (af_ratio)/(af_ratio+1) * vol
-kg_O2 = mw_O2*n_H2/2
+kg_H2 = mw_H2*mol_H2
+#weight of H2 will be molar weight x moles
+
+kg_O2 = mw_O2*mol_H2/2
+#weight of O2 will be molar weight x moles
 
 # %%
-gamma = 1.3
-p2 = p1 * r**(gamma)
-t2 = t1 * r**(gamma-1)
-# %%
-cv_H2 = H2.cv(T=900, p=bar1)
-cv_O2 = O2.cv(T=900, p=bar1)
-cv = cv_H2*(kg_H2/(kg_O2+kg_H2)) + cv_O2*(kg_O2/(kg_H2+kg_O2))
+###################
+#   COMPRESSION   #
+###################
+
+cv_H2_1 = H2.cv(T=t1, p=p1)
+    #volume specific heat at temperature t1
+cv_O2_1 = O2.cv(T=t1, p=p1)
+    #volume specific heat at temperature t1
+cv_1 = cv_H2_1*(kg_H2/(kg_O2+kg_H2)) + cv_O2_1*(kg_O2/(kg_H2+kg_O2))
+    #weighted average value of cv
+
+cp_H2_1 = H2.cp(T=t1, p=p1)
+    #volume specific heat at temperature t1
+cp_O2_1 = O2.cp(T=t1, p=p1)
+    #volume specific heat at temperature t1
+cp_1 = cp_H2_1*(kg_H2/(kg_O2+kg_H2)) + cp_O2_1*(kg_O2/(kg_H2+kg_O2))
+    #weighted average value of cv
+
+gamma_H2_1 = cp_H2_1/cv_H2_1
+gamma_O2_1 = cp_O2_1/cv_O2_1
+gamma_1 = gamma_H2_1*(kg_H2/(kg_O2+kg_H2)) + gamma_O2_1*(kg_O2/(kg_H2+kg_O2))
+#finding gamma. Basicaly the same as assumed value
+
+s_H2_1 = H2.s(T=t1, p=p1)
+    #H2 entropy at state point 1
+s_O2_1 = O2.s(T=t1, p=p1)
+    #O2 entropy at state point 1
+s_1 = s_H2_1*(kg_H2/(kg_O2+kg_H2)) + s_O2_1*(kg_O2/(kg_H2+kg_O2))
+    #weighted average entropy at state point 2
+
+h_H2_1 = H2.h(T=t1, p=p1)
+    #H2 enthalpy at state point 1
+h_O2_1 = O2.h(T=t1, p=p1)
+    #O2 enthlpy at state point 1
+h_1 = h_H2_1*(kg_H2/(kg_O2+kg_H2)) + h_O2_1*(kg_O2/(kg_H2+kg_O2))
+    #weighted average enthalpy at state point 1
+
+p2 = p1 * r ** 1.3366
+    #Finding stage 2 pressure through pressure ratio
+t2 = t1 * r**(1.3366-1)
+    #Finding stage 2 temp through adiabatic compression
+
+cv_H2_2 = H2.cv(T=t2, p=p2)
+    #volume specific heat at temperature t2
+cv_O2_2 = O2.cv(T=t2, p=p2)
+    #volume specific heat at temperature t2
+cv_2 = cv_H2_2*(kg_H2/(kg_O2+kg_H2)) + cv_O2_2*(kg_O2/(kg_H2+kg_O2))
+    #weighted average value of cv
+
+cp_H2_2 = H2.cp(T=t2, p=p2)
+    #volume specific heat at temperature t1
+cp_O2_2 = O2.cp(T=t2, p=p2)
+    #volume specific heat at temperature t1
+cp_2 = cp_H2_2*(kg_H2/(kg_O2+kg_H2)) + cp_O2_2*(kg_O2/(kg_H2+kg_O2))
+    #weighted average value of cv
+
+gamma_H2_2 = cp_H2_1/cv_H2_2
+gamma_O2_2 = cp_O2_1/cv_O2_2
+gamma_2 = gamma_H2_2*(kg_H2/(kg_O2+kg_H2)) + gamma_O2_2*(kg_O2/(kg_H2+kg_O2))
+#finding gamma. Basicaly the same as assumed value
+
+s_H2_2 = H2.s(T=t2, p=p2)
+    #H2 entropy at state point 2
+s_O2_2 = O2.s(T=t2, p=p2)
+    #O2 entropy at state point 2
+s_2 = s_H2_2*(kg_H2/(kg_O2+kg_H2)) + s_O2_2*(kg_O2/(kg_H2+kg_O2))
+    #weighted average entropy at state point 2
+
+h_H2_2 = H2.h(T=t2, p=p2)
+    #H2 enthalpy at state point 2
+h_O2_2 = O2.h(T=t2, p=p2)
+    #O2 enthlpy at state point 2
+h_2 = h_H2_2*(kg_H2/(kg_O2+kg_H2)) + h_O2_2*(kg_O2/(kg_H2+kg_O2))
+    #weighted average enthalpy at state point 2
+
+
+
+wc = h_2 - h_1
+    #specific work required for compression
 
 
 fuel_air = 2*mw_H2 / mw_O2
-t3 = t2 + fuel_air*Q/cv_H2
-
+t3 = t2 + fuel_air*Q/cv_2
 p3 = p2*(t3/t2)
 # %%
 p4 = p3*r**(-gamma)
