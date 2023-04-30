@@ -26,7 +26,7 @@ air     = pm.get('ig.air')
 rho_air = air.d(T=t1, p=p1) 
     #density of air at STP
     
-H2 = pm.get('ig.H2')
+H2      = pm.get('ig.H2')
 rho_air = H2.d(T=t1, p=p1) 
     #density of hydrogen at STP
 # %%
@@ -95,9 +95,9 @@ gamma_1 = (gamma_air_1+gamma_H2_1)/2
 
 gamma_avg = 1.3944
 
-p2 = p1 * r ** gamma_avg
+p2 = p1 * r ** gamma_1 #gamma_avg
     #Finding stage 2 pressure through pressure ratio
-t2 = t1 * r**(gamma_avg-1)
+t2 = t1 * r**(gamma_1-1)
     #Finding stage 2 temp through adiabatic compression
 
 cv_air_2 = air.cv(T=t2, p=p2)
@@ -142,9 +142,9 @@ t3 = t2 + Q*(kg_H2/excess)/(kg_air*cv_air_avg + (kg_H2*excess-kg_H2)*cv_H2_avg)
 p3 = p2*(t3/t2)
 
 cv_air_3 = air.cv(T=t3, p=p3)
-cp_air_3 = air.cv(T=t3, p=p3)
-h_air_3 = air.cv(T=t3, p=p3)
-s_air_3 = air.cv(T=t3, p=p3)
+cp_air_3 = air.cp(T=t3, p=p3)
+h_air_3 = air.h(T=t3, p=p3)
+s_air_3 = air.s(T=t3, p=p3)
 
 cv_H2_3 = H2.cv(T=t3, p=p3)
 cp_H2_3 = H2.cp(T=t3, p=p3)
@@ -167,13 +167,13 @@ gamma_3 = (gamma_air_3+gamma_H2_3)/2
 
 gamma_avg_34 = 1.1368
 
-p4 = p3*r**(-gamma_avg_34)
-t4 = t3*r**(1-gamma_avg_34)
+p4 = p3*r**(-gamma_3)
+t4 = t3*r**(1-gamma_3)
 
 cv_air_4 = air.cv(T=t4, p=p4)
-cp_air_4 = air.cv(T=t4, p=p4)
-h_air_4 = air.cv(T=t4, p=p4)
-s_air_4 = air.cv(T=t4, p=p4)
+cp_air_4 = air.cp(T=t4, p=p4)
+h_air_4 = air.h(T=t4, p=p4)
+s_air_4 = air.s(T=t4, p=p4)
 
 cv_H2_4 = H2.cv(T=t4, p=p4)
 cp_H2_4 = H2.cp(T=t4, p=p4)
@@ -201,33 +201,34 @@ print(P)
 
 #PLOTTING
 fig1 = plt.figure()
-plt.plot(t1, p1/1000, marker="o")
-plt.plot(t2, p2/1000, marker="o")
-plt.plot(t3, p3/1000, marker="o")
-plt.plot(t4, p4/1000, marker="o")
-plt.annotate(f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
+plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1:.2f}[kJ/kg]')
+plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2[0]:.2f}[K]\nP2 = {p2[0]:.2f}[kJ/kg]')
+plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3[0]:.2f}[K]\nP3 = {p3[0]:.2f}[kJ/kg]')
+plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]:.2f}[kJ/kg]')
+#plt.annotate(f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 plt.annotate('1',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
 
 plt.annotate('2',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate(f'T2 = {t2:.2f}[K]\nP2 = {p2/1000:.2f}[kPa]',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
+#plt.annotate(f'T2 = {t2[0]:.2f}[K]\nP2 = {p2[0]/1000:.2f}[kPa]',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 
 plt.annotate('3',xy=(t3,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate(f'T3 = {t3:.2f}[K]\nP3 = {p3/1000:.2f}[kPa]',xy=(t3,p3/1000),horizontalalignment='right', verticalalignment='top', fontsize=10)  
+#plt.annotate(f'T3 = {t3[0]:.2f}[K]\nP3 = {p3[0]/1000:.2f}[kPa]',xy=(t3,p3/1000),horizontalalignment='right', verticalalignment='top', fontsize=10)  
 
 plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate(f'T4 = {t4:.2f}[K]\nP4 = {p4/1000:.2f}[kPa]',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
+#plt.annotate(f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]/1000:.2f}[kPa]',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 
 plt.xlabel('Temperature [K]')
 plt.ylabel('Pressure [kPa]')
-plt.title('80cc Hydrogen-Oxygen Otto Cycle Simulation P-T Diagram')
+plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-T Diagram')
 plt.grid()
+plt.legend()
 #%%
 fig2 = plt.figure()
 
-plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {s_1[0]:.2f}[kPa]')
-plt.plot(s_2, t2, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {s_2[0]:.2f}[kPa]')
-plt.plot(s_3, t3, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {s_3[0]:.2f}[kPa]')
-plt.plot(s_4, t4, marker="o", label = f'T4 = {t4:.2f}[K]\nP4 = {s_4[0]:.2f}[kPa]')
+plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {s_1[0]:.2f}[kJ/kg]')
+plt.plot(s_2, t2, marker="o", label = f'T2 = {t2[0]:.2f}[K]\nP2 = {s_2[0]:.2f}[kJ/kg]')
+plt.plot(s_3, t3, marker="o", label = f'T3 = {t3[0]:.2f}[K]\nP3 = {s_3[0]:.2f}[kJ/kg]')
+plt.plot(s_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {s_4[0]:.2f}[kJ/kg]')
 
 plt.annotate('1',xy=(s_1, t1),horizontalalignment='left', verticalalignment='top', fontsize=20)         
 
@@ -241,7 +242,7 @@ plt.annotate('4',xy=(s_4, t4),horizontalalignment='left', verticalalignment='top
 
 plt.ylabel('Temperature [K]')
 plt.xlabel('Entropy [kJ/K]')
-plt.title('80cc Hydrogen-Oxygen Otto Cycle Simulation T-S Diagram')
+plt.title('80cc Hydrogen-Air Otto Cycle Simulation T-S Diagram')
 plt.grid()
 plt.legend()
 # %%
