@@ -32,8 +32,10 @@ rho_air = H2.d(T=t1, p=p1)
 # %%
 
 #quick calculation to get molar fractions
+excess = 1.20
+    #percent excess
 air_part = 1
-hydrogen = 0.21*2
+hydrogen = 0.21*2 * excess
     #hydrogen will be two times the moles of oxygen present
 total = air_part + hydrogen
 air_fraction = air_part/total
@@ -128,8 +130,9 @@ gamma_2 = (gamma_air_2 + gamma_H2_2)/2
 gamma_avg = (gamma_1 + gamma_2)/2
 #%%
 cv_air_avg = 0.8735
-fuel_air = kg_H2 / kg_air
-t3 = t2 + Q*kg_H2/(kg_air*cv_air_avg)
+cv_H2_avg = 11.5
+#fuel_air = kg_H2 / kg_air
+t3 = t2 + Q*(kg_H2/excess)/(kg_air*cv_air_avg + (kg_H2*excess-kg_H2)*cv_H2_avg)
 p3 = p2*(t3/t2)
 
 cv_air_3 = air.cv(T=t3, p=p3)
