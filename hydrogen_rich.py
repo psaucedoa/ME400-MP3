@@ -247,7 +247,7 @@ p23 = air.p(T=t_23, v=v23_air)/1000
 p34 = air.p(T=t_34, s=s_air_3)/1000
 p41 = air.p(T=t_14, v=v41_air)/1000
 
-
+fig1 = plt.figure()
 plt.plot(v12, p12,'r--',linewidth=1.5)
 plt.plot([v23,v23],[p2/1000,p3/1000],'r',linewidth=1.5)
 plt.plot(v34, p34,'r--',linewidth=1.5)
@@ -269,6 +269,7 @@ plt.legend()
 plt.xlabel('Volume [cc]')
 plt.ylabel('Pressure [kPa]')
 plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram')
+plt.savefig(f'Graphs/P-V_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #   SPECIFIC VOL  #
@@ -283,6 +284,8 @@ v1_sp = (v1_air*kg_air + v1_H2*kg_H2)/(kg_air+kg_H2)
 v2_sp = (v2_air*kg_air + v2_H2*kg_H2)/(kg_air+kg_H2)
 v3_sp = (v3_air*kg_air + v3_H2*kg_H2)/(kg_air+kg_H2)
 v4_sp = (v4_air*kg_air + v4_H2*kg_H2)/(kg_air+kg_H2)
+
+fig2 = plt.figure()
 
 plt.plot(v12_sp, p12,'r--',linewidth=1.5)
 plt.plot([v23_sp,v23_sp],[p2/1000,p3/1000],'r',linewidth=1.5)
@@ -304,14 +307,15 @@ plt.legend()
 
 plt.xlabel(r'Specific Volume [$m^3$/kg]')
 plt.ylabel('Pressure [kPa]')
-plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-V Diagram (Specific)')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram (Specific)')
+plt.savefig(f'Graphs/P-V_specific_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #       TEMP      #
 ###################
 
 #PLOTTING
-fig1 = plt.figure()
+fig3 = plt.figure()
 plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]')
 plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2/1000:.2f}[kPa]')
 plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3/1000:.2f}[kPa]')
@@ -342,15 +346,17 @@ plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='
 
 plt.xlabel('Temperature [K]')
 plt.ylabel('Pressure [kPa]')
-plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-T Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T Diagram')
+
 plt.grid()
 plt.legend()
+plt.savefig(f'Graphs/P-T_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #     ENTROPY     #
 ###################
 
-fig2 = plt.figure()
+fig4 = plt.figure()
 
 plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_1[0]:.2f}[kJ/kg]')
 plt.plot(s_2, t2, marker="o", label = f'T2 = {t2:.2f}[K]\ns2 = {s_2[0]:.2f}[kJ/kg]')
@@ -385,10 +391,11 @@ plt.annotate('4',xy=(s_4, t4),horizontalalignment='left', verticalalignment='top
 #plt.annotate(f'T4 = {t4[0]:.2f}[K]\nP4 = {s_4[0]:.2f}[kPa]',xy=(t4,s_4),horizontalalignment='left', verticalalignment='baseline', fontsize=10)  
 
 plt.ylabel('Temperature [K]')
-plt.xlabel('Specific? Entropy [kJ/K]')
-plt.title('80cc Hydrogen-Air Otto Cycle Simulation T-S Diagram')
+plt.xlabel('Specific Entropy [kJ/K kg]')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation T-S Diagram')
 plt.grid()
 plt.legend()
+plt.savefig(f'Graphs/T-S_{np.round((excess-1)*100)}_excess.png')
 # %%
 
 ###################
@@ -409,7 +416,9 @@ runtime = (m_tot_H2/m_dot_H2)/60
 plt.plot(duty_cycle, runtime)
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [min]')
+plt.title(f'Runtime, {np.round((excess-1)*100)} excess fuel')
 plt.grid()
+plt.savefig(f'Graphs/runtime_duty_cycle_{np.round((excess-1)*100)}_excess.png')
 # %%
 avg_rpm = np.linspace(1000,6000,100)
 rps = avg_rpm/60
@@ -421,4 +430,6 @@ plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [min]')
 plt.grid()
+plt.title(f'Runtime, {np.round((excess-1)*100)} excess fuel')
+plt.savefig(f'Graphs/runtime_rpm_{np.round((excess-1)*100)}_excess.png')
 # %%
