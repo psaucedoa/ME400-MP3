@@ -84,20 +84,24 @@ s_H2_1 = H2.s(T=t1, p=p1)
     #air entropy at state point 1
 h_H2_1 = H2.h(T=t1, p=p1)
     #air enthlpy at state point 1
-s_1 = (s_H2_1+s_air_1)/2
+s_1 = (s_H2_1*kg_H2+s_air_1*kg_air)/(kg_air+kg_H2)
 
-gamma_1 = (gamma_air_1+gamma_H2_1)/2
+v1_air = air.v(T=t1, p=p1)
+v1_H2 = H2.v(T=t1, p=p1)
+v1_tot = v1_air+v1_H2
+
+gamma_1 = (gamma_air_1*kg_air+gamma_H2_1*kg_H2)/(kg_H2+kg_air)
 #%%
 
 ###################
 #   COMPRESSION   #
 ###################
 
-gamma_avg = 1.3944
+gamma_avg = 1.391217
 
-p2 = p1 * r ** gamma_1 #gamma_avg
+p2 = p1 * r ** gamma_avg #gamma_avg
     #Finding stage 2 pressure through pressure ratio
-t2 = t1 * r**(gamma_1-1)
+t2 = t1 * r**(gamma_avg-1)
     #Finding stage 2 temp through adiabatic compression
 
 cv_air_2 = air.cv(T=t2, p=p2)
@@ -122,12 +126,12 @@ s_H2_2 = H2.s(T=t2, p=p2)
 h_H2_2 = H2.h(T=t2, p=p2)
     #air enthlpy at state point 2
 
-s_2 = (s_H2_2+s_air_2)/2
+s_2 = (s_H2_2*kg_H2+s_air_2*kg_air)/(kg_air+kg_H2)
 
 wc = h_air_2 - h_air_1
     #specific work required for compression
 
-gamma_2 = (gamma_air_2 + gamma_H2_2)/2
+gamma_2 = (gamma_air_2*kg_air+gamma_H2_2*kg_H2)/(kg_H2+kg_air)
 
 gamma_avg_12 = (gamma_1 + gamma_2)/2
 #%%
@@ -154,12 +158,12 @@ h_H2_3 = H2.h(T=t3, p=p3)
 cv_air_avg = (cv_air_3+cv_air_2)/2
 cv_H2_avg = (cv_H2_3+cv_H2_2)/2
 
-s_3 = (s_H2_3+s_air_3)/2
+s_3 = (s_H2_3*kg_H2+s_air_3*kg_air)/(kg_air+kg_H2)
 
 gamma_air_3 = cp_air_3/cv_air_3
 gamma_H2_3 = cp_H2_3/cv_H2_3
 
-gamma_3 = (gamma_air_3+gamma_H2_3)/2
+gamma_3 = (gamma_air_3*kg_air+gamma_H2_3*kg_H2)/(kg_H2+kg_air)
 #%%
 ###################
 #     EXHAUST     #
@@ -182,12 +186,12 @@ h_H2_4 = H2.h(T=t4, p=p4)
 
 cv_avg = (cv_air_1+cv_air_2+cv_air_3+cv_air_4)/4
 
-s_4 = (s_H2_4+s_air_4)/2
+s_4 = (s_H2_4*kg_H2+s_air_4*kg_air)/(kg_air+kg_H2)
 
 gamma_air_4 = cp_air_4/cv_air_4
 gamma_H2_4 = cp_H2_4/cv_H2_4
 
-gamma_4 = (gamma_air_4+gamma_H2_4)/2
+gamma_4 = (gamma_air_4*kg_air+gamma_H2_4*kg_H2)/(kg_H2+kg_air)
 
 #gamma_avg_34 = (gamma_3+gamma_4)/2
 # %%
@@ -202,8 +206,8 @@ print(P)
 #PLOTTING
 fig1 = plt.figure()
 plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1:.2f}[kJ/kg]')
-plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2[0]:.2f}[K]\nP2 = {p2[0]:.2f}[kJ/kg]')
-plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3[0]:.2f}[K]\nP3 = {p3[0]:.2f}[kJ/kg]')
+plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2:.2f}[kJ/kg]')
+plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3:.2f}[kJ/kg]')
 plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]:.2f}[kJ/kg]')
 #plt.annotate(f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 plt.annotate('1',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
@@ -223,12 +227,39 @@ plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-T Diagram')
 plt.grid()
 plt.legend()
 #%%
+###################
+#     ENTROPY     #
+###################
+
 fig2 = plt.figure()
 
-plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {s_1[0]:.2f}[kJ/kg]')
-plt.plot(s_2, t2, marker="o", label = f'T2 = {t2[0]:.2f}[K]\nP2 = {s_2[0]:.2f}[kJ/kg]')
-plt.plot(s_3, t3, marker="o", label = f'T3 = {t3[0]:.2f}[K]\nP3 = {s_3[0]:.2f}[kJ/kg]')
-plt.plot(s_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {s_4[0]:.2f}[kJ/kg]')
+plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_1[0]:.2f}[kJ/kg]')
+plt.plot(s_2, t2, marker="o", label = f'T2 = {t2:.2f}[K]\ns2 = {s_2[0]:.2f}[kJ/kg]')
+plt.plot(s_3, t3, marker="o", label = f'T3 = {t3:.2f}[K]\ns3 = {s_3[0]:.2f}[kJ/kg]')
+plt.plot(s_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\ns4 = {s_4[0]:.2f}[kJ/kg]')
+
+#LINES
+plt.plot([s_1[0],s_2[0]],[t1,t2],'r',linewidth=1.5)
+plt.plot([s_3[0],s_4[0]],[t3,t4[0]],'r',linewidth=1.5)
+
+
+l = 20
+t_14 = np.linspace(t1, t4[0], l)
+v14_air = air.v(T=t1, s=s_air_1[0])
+v14_H2 = H2.v(T=t1, s=s_H2_1[0])
+air_s_14 = air.s(T=t_14, v=v14_air)
+H2_s_14 = H2.s(T=t_14, v=v14_H2)
+gas_14 = (air_s_14*kg_air+H2_s_14*kg_H2)/(kg_air+kg_H2)
+plt.plot(gas_14,t_14,'r--',linewidth=1.5)
+
+t_23 = np.linspace(t2, t3, l)
+v23_air = air.v(T=t2, s=s_air_2[0])
+v23_H2 = H2.v(T=t2, s=s_H2_2[0])
+air_s_23 = air.s(T=t_23, v=v23_air)
+H2_s_23 = H2.s(T=t_23, v=v23_H2)
+gas_23 = (air_s_23*kg_air+H2_s_23*kg_H2)/(kg_air+kg_H2)
+plt.plot(gas_23,t_23,'r--',linewidth=1.5)
+
 
 plt.annotate('1',xy=(s_1, t1),horizontalalignment='left', verticalalignment='top', fontsize=20)         
 
@@ -241,7 +272,7 @@ plt.annotate('4',xy=(s_4, t4),horizontalalignment='left', verticalalignment='top
 #plt.annotate(f'T4 = {t4[0]:.2f}[K]\nP4 = {s_4[0]:.2f}[kPa]',xy=(t4,s_4),horizontalalignment='left', verticalalignment='baseline', fontsize=10)  
 
 plt.ylabel('Temperature [K]')
-plt.xlabel('Entropy [kJ/K]')
+plt.xlabel('Specific? Entropy [kJ/K]')
 plt.title('80cc Hydrogen-Air Otto Cycle Simulation T-S Diagram')
 plt.grid()
 plt.legend()
