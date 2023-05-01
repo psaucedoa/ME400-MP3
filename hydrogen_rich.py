@@ -200,15 +200,134 @@ W = cv_avg*( (t3-t2)-(t4-t1) )
 P_spec = W*rpm/60
 P = P_spec*(kg_air + kg_H2)
 print(P)
-#%%
 
+#%%
+###################
+#     VOLUME      #
+###################
+
+l = 20
+t_12 = np.linspace(t1, t2, l)
+t_23 = np.linspace(t2, t3, l)
+t_34 = np.linspace(t3, t4, l)
+t_14 = np.linspace(t1, t4[0], l)
+
+v1_air = air.v(T=t1, s=s_air_1)
+v2_air = air.v(T=t2, s=s_air_2)
+v3_air = air.v(T=t3, s=s_air_3)
+v4_air = air.v(T=t4, s=s_air_4)
+
+v1_H2 = H2.v(T=t1, s=s_H2_1)
+v2_H2 = H2.v(T=t2, s=s_H2_2)
+v3_H2 = H2.v(T=t3, s=s_H2_3)
+v4_H2 = H2.v(T=t4, s=s_H2_4)
+
+v1 = (v1_air*kg_air + v1_H2*kg_H2)*1e6
+v2 = (v2_air*kg_air + v2_H2*kg_H2)*1e6
+v3 = (v3_air*kg_air + v3_H2*kg_H2)*1e6
+v4 = (v4_air*kg_air + v4_H2*kg_H2)*1e6
+
+v12_air = air.v(T=t_12, s=s_air_1)
+v23_air = air.v(T=t2, s=s_air_2[0])
+v34_air = air.v(T=t_34, s=s_air_4)
+v41_air = air.v(T=t4, s=s_air_4[0])
+
+v12_H2 = H2.v(T=t_12, s=s_H2_1)
+v23_H2 = H2.v(T=t2, s=s_H2_2[0])
+v34_H2 = H2.v(T=t_34, s=s_H2_4)
+v41_H2 = H2.v(T=t4, s=s_H2_4[0])
+
+v12 = (v12_air*kg_air + v12_H2*kg_H2)*1e6
+v23 = (v23_air*kg_air + v23_H2*kg_H2)*1e6
+v34 = (v34_air*kg_air + v34_H2*kg_H2)*1e6
+v41 = (v41_air*kg_air + v41_H2*kg_H2)*1e6
+
+p12 = air.p(T=t_12, s=s_air_1)/1000
+p23 = air.p(T=t_23, v=v23_air)/1000
+p34 = air.p(T=t_34, s=s_air_3)/1000
+p41 = air.p(T=t_14, v=v41_air)/1000
+
+
+plt.plot(v12, p12,'r--',linewidth=1.5)
+plt.plot([v23,v23],[p2/1000,p3/1000],'r',linewidth=1.5)
+plt.plot(v34, p34,'r--',linewidth=1.5)
+plt.plot([v41[0],v41[0]],[p4[0]/1000,p1/1000],'r',linewidth=1.5)
+
+plt.annotate('1',xy=(v1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('2',xy=(v2,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('3',xy=(v3,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('4',xy=(v4,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+
+plt.plot(v1, p1/1000, marker="o", label = f'V1 = {v1[0]:.2f}[cc]\nP1 = {p1/1000:.2f}[kPa]')
+plt.plot(v2, p2/1000, marker="o", label = f'V2 = {v2[0]:.2f}[cc]\nP2 = {p2/1000:.2f}[kPa]')
+plt.plot(v3, p3/1000, marker="o", label = f'V3 = {v3[0]:.2f}[cc]\nP3 = {p3/1000:.2f}[kPa]')
+plt.plot(v4, p4/1000, marker="o", label = f'V4 = {v4[0]:.2f}[cc]\nP4 = {p4[0]/1000:.2f}[kPa]')
+
+plt.grid()
+plt.legend()
+
+plt.xlabel('Volume [cc]')
+plt.ylabel('Pressure [kPa]')
+plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-V Diagram')
+#%%
+###################
+#   SPECIFIC VOL  #
+###################
+
+v12_sp = (v12_air*kg_air + v12_H2*kg_H2)/(kg_H2+kg_air)
+v23_sp = (v23_air*kg_air + v23_H2*kg_H2)/(kg_H2+kg_air)
+v34_sp = (v34_air*kg_air + v34_H2*kg_H2)/(kg_H2+kg_air)
+v41_sp = (v41_air*kg_air + v41_H2*kg_H2)/(kg_H2+kg_air)
+
+v1_sp = (v1_air*kg_air + v1_H2*kg_H2)/(kg_air+kg_H2)
+v2_sp = (v2_air*kg_air + v2_H2*kg_H2)/(kg_air+kg_H2)
+v3_sp = (v3_air*kg_air + v3_H2*kg_H2)/(kg_air+kg_H2)
+v4_sp = (v4_air*kg_air + v4_H2*kg_H2)/(kg_air+kg_H2)
+
+plt.plot(v12_sp, p12,'r--',linewidth=1.5)
+plt.plot([v23_sp,v23_sp],[p2/1000,p3/1000],'r',linewidth=1.5)
+plt.plot(v34_sp, p34,'r--',linewidth=1.5)
+plt.plot([v41_sp[0],v41_sp[0]],[p4[0]/1000,p1/1000],'r',linewidth=1.5)
+
+plt.annotate('1',xy=(v1_sp,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('2',xy=(v2_sp,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('3',xy=(v3_sp,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+plt.annotate('4',xy=(v4_sp,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+
+plt.plot(v1_sp, p1/1000, marker="o", label = f'V1 = {v1_sp[0]:.2f}[$m^3$]\nP1 = {p1/1000:.2f}[kPa]')
+plt.plot(v2_sp, p2/1000, marker="o", label = f'V2 = {v2_sp[0]:.2f}[$m^3$]\nP2 = {p2/1000:.2f}[kPa]')
+plt.plot(v3_sp, p3/1000, marker="o", label = f'V3 = {v3_sp[0]:.2f}[$m^3$]\nP3 = {p3/1000:.2f}[kPa]')
+plt.plot(v4_sp, p4/1000, marker="o", label = f'V4 = {v4_sp[0]:.2f}[$m^3$]\nP4 = {p4[0]/1000:.2f}[kPa]')
+
+plt.grid()
+plt.legend()
+
+plt.xlabel(r'Specific Volume [$m^3$/kg]')
+plt.ylabel('Pressure [kPa]')
+plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-V Diagram (Specific)')
+#%%
+###################
+#       TEMP      #
+###################
 
 #PLOTTING
 fig1 = plt.figure()
-plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1:.2f}[kJ/kg]')
-plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2:.2f}[kJ/kg]')
-plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3:.2f}[kJ/kg]')
-plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]:.2f}[kJ/kg]')
+plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]')
+plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2/1000:.2f}[kPa]')
+plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3/1000:.2f}[kPa]')
+plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]/1000:.2f}[kPa]')
+
+p12 = air.p(T=t_12, s=s_air_1)/1000
+p23 = air.p(T=t_23, v=v23_air)/1000
+p34 = air.p(T=t_34, s=s_air_3)/1000
+p41 = air.p(T=t_14, v=v41_air)/1000
+
+plt.plot(t_12, p12,'r--',linewidth=1.5)
+plt.plot(t_23, p23,'r--',linewidth=1.5)
+plt.plot(t_34, p34,'r--',linewidth=1.5)
+plt.plot(t_14, p41,'r--',linewidth=1.5)
+
+
 #plt.annotate(f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 plt.annotate('1',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
 
@@ -242,21 +361,9 @@ plt.plot(s_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\ns4 = {s_4[0]:.2f}[k
 plt.plot([s_1[0],s_2[0]],[t1,t2],'r',linewidth=1.5)
 plt.plot([s_3[0],s_4[0]],[t3,t4[0]],'r',linewidth=1.5)
 
-
-l = 20
-t_14 = np.linspace(t1, t4[0], l)
-v14_air = air.v(T=t1, s=s_air_1[0])
-v14_H2 = H2.v(T=t1, s=s_H2_1[0])
-air_s_14 = air.s(T=t_14, v=v14_air)
-H2_s_14 = H2.s(T=t_14, v=v14_H2)
 gas_14 = (air_s_14*kg_air+H2_s_14*kg_H2)/(kg_air+kg_H2)
 plt.plot(gas_14,t_14,'r--',linewidth=1.5)
 
-t_23 = np.linspace(t2, t3, l)
-v23_air = air.v(T=t2, s=s_air_2[0])
-v23_H2 = H2.v(T=t2, s=s_H2_2[0])
-air_s_23 = air.s(T=t_23, v=v23_air)
-H2_s_23 = H2.s(T=t_23, v=v23_H2)
 gas_23 = (air_s_23*kg_air+H2_s_23*kg_H2)/(kg_air+kg_H2)
 plt.plot(gas_23,t_23,'r--',linewidth=1.5)
 
