@@ -384,3 +384,37 @@ plt.title('80cc Hydrogen-Air Otto Cycle Simulation T-S Diagram')
 plt.grid()
 plt.legend()
 # %%
+
+###################
+#     RUNTIME     #
+###################
+
+duty_cycle = np.linspace(0.1,1,100)
+rps = 6000/60
+m_dot_H2 = kg_H2*rps*duty_cycle
+
+tank_vol = 3 #[liters]
+tank_pressure = 150 #[bar]
+tank_size = 350*3/1.01325 #[liters at stp]
+m_tot_H2 = H2.d(T=t1, p=p1)*tank_size/1000
+
+runtime = (m_tot_H2/m_dot_H2)/60
+
+plt.plot(duty_cycle, runtime)
+plt.xlabel('Duty Cycle')
+plt.ylabel('Runtime [min]')
+# %%
+avg_rpm = np.linspace(1000,6000,100)
+rps = avg_rpm/60
+m_dot_H2 = kg_H2*rps
+
+tank_vol = 3 #[liters]
+tank_pressure = 350 #[bar]
+tank_size = 350*3/1.01325 #[liters at stp]
+m_tot_H2 = H2.d(T=t1, p=p1)*tank_size/1000
+
+runtime = (m_tot_H2/m_dot_H2)/60
+
+plt.plot(avg_rpm, runtime)
+
+# %%
