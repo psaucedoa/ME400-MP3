@@ -4,6 +4,7 @@ import pyromat as pm
 import matplotlib.pyplot as plt
 import pandas as pd
 # %%
+#Force the unit system into kJ,kg,KPa,K
 pm.config['unit_energy'] = 'kJ'
 pm.config['unit_matter'] = 'kg'
 pm.config['unit_pressure'] = 'Pa'
@@ -32,7 +33,7 @@ rho_air = H2.d(T=t1, p=p1)
 # %%
 
 #quick calculation to get molar fractions
-excess = 1.20
+excess = 1.
     #percent excess
 air_part = 1
 hydrogen = 0.21*2 * excess
@@ -199,7 +200,7 @@ W = cv_avg*( (t3-t2)-(t4-t1) )
 
 P_spec = W*rpm/60
 P = P_spec*(kg_air + kg_H2)
-print(P)
+print(f'kW = {P}')
 
 #%%
 ###################
@@ -269,7 +270,7 @@ plt.legend()
 plt.xlabel('Volume [cc]')
 plt.ylabel('Pressure [kPa]')
 plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram')
-plt.savefig(f'Graphs/P-V_{np.round((excess-1)*100)}_excess.png')
+plt.savefig(f'Hydrogen-Air_graphs/P-V_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #   SPECIFIC VOL  #
@@ -307,8 +308,9 @@ plt.legend()
 
 plt.xlabel(r'Specific Volume [$m^3$/kg]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram (Specific)')
-plt.savefig(f'Graphs/P-V_specific_{np.round((excess-1)*100)}_excess.png')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-v Diagram')
+plt.ylim(-100,10000)
+plt.savefig(f'Hydrogen-Air_graphs/P-V_specific_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #       TEMP      #
@@ -350,7 +352,10 @@ plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simu
 
 plt.grid()
 plt.legend()
-plt.savefig(f'Graphs/P-T_{np.round((excess-1)*100)}_excess.png')
+plt.xlim(0,5000)
+plt.ylim(0,10000)
+
+plt.savefig(f'Hydrogen-Air_graphs/P-T_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
 #     ENTROPY     #
@@ -395,20 +400,23 @@ plt.xlabel('Specific Entropy [kJ/K kg]')
 plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation T-S Diagram')
 plt.grid()
 plt.legend()
-plt.savefig(f'Graphs/T-S_{np.round((excess-1)*100)}_excess.png')
+
+plt.ylim(0,5000)
+
+plt.savefig(f'Hydrogen-Air_graphs/T-S_{np.round((excess-1)*100)}_excess.png')
 # %%
 
 ###################
 #     RUNTIME     #
 ###################
-
+fig5 = plt.figure()
 duty_cycle = np.linspace(0.1,1,100)
 rps = 6000/60
 m_dot_H2 = kg_H2*rps*duty_cycle
 
-tank_vol = 3 #[liters]
-tank_pressure = 150 #[bar]
-tank_size = 350*3/1.01325 #[liters at stp]
+tank_vol = 6 #[liters]
+tank_pressure = 345 #[bar]
+tank_size = tank_pressure*tank_vol/1.01325 #[liters at stp]
 m_tot_H2 = H2.d(T=t1, p=p1)*tank_size/1000
 
 runtime = (m_tot_H2/m_dot_H2)/60
@@ -416,10 +424,13 @@ runtime = (m_tot_H2/m_dot_H2)/60
 plt.plot(duty_cycle, runtime)
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, {np.round((excess-1)*100)} excess fuel')
+plt.title(f'Runtime, Hydrogen-Air {np.round((excess-1)*100)}% excess fuel with Duty Cycle')
 plt.grid()
-plt.savefig(f'Graphs/runtime_duty_cycle_{np.round((excess-1)*100)}_excess.png')
+plt.ylim(10,200)
+plt.xlim(0.1,1)
+plt.savefig(f'Hydrogen-Air_graphs/runtime_duty_cycle_{np.round((excess-1)*100)}_excess.png')
 # %%
+fig6 = plt.figure()
 avg_rpm = np.linspace(1000,6000,100)
 rps = avg_rpm/60
 m_dot_H2 = kg_H2*rps
@@ -430,6 +441,8 @@ plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [min]')
 plt.grid()
-plt.title(f'Runtime, {np.round((excess-1)*100)} excess fuel')
-plt.savefig(f'Graphs/runtime_rpm_{np.round((excess-1)*100)}_excess.png')
+plt.title(f'Runtime, Hydrogen-Air {np.round((excess-1)*100)}% excess fuel at given RPM')
+plt.ylim(10,200)
+plt.xlim(1000,6000)
+plt.savefig(f'Hydrogen-Air_graphs/runtime_rpm_{np.round((excess-1)*100)}_excess.png')
 # %%
