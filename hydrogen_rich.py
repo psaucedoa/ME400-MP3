@@ -268,7 +268,7 @@ plt.legend()
 
 plt.xlabel('Volume [cc]')
 plt.ylabel('Pressure [kPa]')
-plt.title('80cc Hydrogen-Air Otto Cycle Simulation P-V Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram')
 #%%
 ###################
 #   SPECIFIC VOL  #
@@ -361,6 +361,12 @@ plt.plot(s_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\ns4 = {s_4[0]:.2f}[k
 plt.plot([s_1[0],s_2[0]],[t1,t2],'r',linewidth=1.5)
 plt.plot([s_3[0],s_4[0]],[t3,t4[0]],'r',linewidth=1.5)
 
+air_s_14 = air.s(T=t_14, v=v41_air)
+air_s_23 = air.s(T=t_23, v=v23_air)
+
+H2_s_14 = H2.s(T=t_14, v=v41_H2)
+H2_s_23 = H2.s(T=t_23, v=v23_H2)
+
 gas_14 = (air_s_14*kg_air+H2_s_14*kg_H2)/(kg_air+kg_H2)
 plt.plot(gas_14,t_14,'r--',linewidth=1.5)
 
@@ -403,18 +409,16 @@ runtime = (m_tot_H2/m_dot_H2)/60
 plt.plot(duty_cycle, runtime)
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [min]')
+plt.grid()
 # %%
 avg_rpm = np.linspace(1000,6000,100)
 rps = avg_rpm/60
 m_dot_H2 = kg_H2*rps
 
-tank_vol = 3 #[liters]
-tank_pressure = 350 #[bar]
-tank_size = 350*3/1.01325 #[liters at stp]
-m_tot_H2 = H2.d(T=t1, p=p1)*tank_size/1000
-
 runtime = (m_tot_H2/m_dot_H2)/60
 
 plt.plot(avg_rpm, runtime)
-
+plt.xlabel('Average RPM')
+plt.ylabel('Runtime [min]')
+plt.grid()
 # %%
