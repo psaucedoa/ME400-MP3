@@ -34,7 +34,7 @@ We are delaing with iso-octane in the liquid form, so the volume is negligible. 
 
 ### Hydrogen Powered Engine is not an Ideal Air Cycle
 
-We assume Hydrogen makes up a significant portion of the volume of the intake gas. This is in fact true, as we need twice the moles of hydrogen as oxygen present in our atmopsheric gas. However, this means that many properties of air, such as specific heats, will change. We account for this in our calculations. This also means that, since hydrogen takes up lots of volume, the amount of oxygen present in the combustion chamber is less than that of the iso-octane powered engine.
+We assume Hydrogen makes up a significant portion of the volume of the intake gas. This is in fact true, as we need twice the moles of hydrogen as oxygen present in our atmopsheric gas. However, this means that many properties of air, such as specific heats, will change. We account for this in our calculations. This also means that, since hydrogen takes up lots of volume, the amount of oxygen present in the combustion chamber is less than that of the iso-octane powered engine. We also assume the composition of the exhaust gasses remains the same as the intake gasses, just as with the iso-octane powered engine analysis. 
 
 ### Combustion Takes Places With Stoichiometric Ratios
 
