@@ -360,7 +360,6 @@ plt.savefig(f'Hydrogen-Air_graphs/P-T_{np.round((excess-1)*100)}_excess.png')
 ###################
 #     ENTROPY     #
 ###################
-
 fig4 = plt.figure()
 
 plt.plot(s_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_1[0]:.2f}[kJ/kg]')
