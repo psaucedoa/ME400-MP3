@@ -47,3 +47,5 @@ We assume Hydrogen makes up a significant portion of the volume of the intake ga
 ### Combustion Takes Places With Stoichiometric Ratios
 
 We assume combusiton happens stoichiometrically. This is not how engines operate in real life. Many gasoline-powered engines purposefully use a fuel-rich mixture. This allows for some evaporative cooling of the engine, as the uncombusted fuel takes some of the heat generated from combustion away with it, keeping the engine cooler. Here, we are just analysing the performance of different fuels. Infromed by these findings, one may then begin to tune fuel ratios for favorable thermal and pwoer properties.
+
+Test
