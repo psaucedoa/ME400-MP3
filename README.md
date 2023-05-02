@@ -11,6 +11,10 @@ This will be cleaned up at some later data.
 You're gonna need PYroMAT. Follow the installation instructions or do it the way you are most comfortable.
 See https://tbretl.github.io/ae353-sp22/setup#windows on how to set up python real nice with VSCode.
 
+# Results
+Our graphs and figures are located in the folders abve, labeled "Hydrogen-Air_graphs" and "Iso-Octane_graphs."
+
+Alternitavely, one could also clone the repo and run the scripts themselves, which should produce those same graphs.
 # Assumptions
 The premise of this project is to do the math behind a theoretical hydrogen converison of a two-stroke engine. Basically to see what would happen, how would the performance chnage, what would the temperatures, mass flow rates, pressures, etc., look like when compared to a conventional two-stroke engine running iso-octane fuel.
 
