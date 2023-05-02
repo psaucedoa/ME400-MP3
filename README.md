@@ -1,5 +1,9 @@
 # ME400-MP3
-Files for the project. Ideally all of these things would be nestled in functions and nice but that is for later.
+Files for Mini-Project 3 of Professor Leon Liebenberg's ME400 "Energy Conversion Systems" class, Spring 2023.
+
+The premise of this project is to do the math behind a theoretical hydrogen converison of a two-stroke engine. Basically to see what would happen, how would the performance chnage, what would the temperatures, mass flow rates, pressures, etc., look like when compared to a conventional two-stroke engine running iso-octane fuel.
+
+Ideally all of these things would be nestled in functions and nice and presentable but unfrotunately that is a function of time which I sadly do not have haha.
 # Files
 "Hydrogen-Rich" is a basic combustion process with excess hydrogen.
 "Hydrogen air analysis" is basic combustion with stoichiometric ratios.
@@ -16,7 +20,6 @@ Our graphs and figures are located in the folders abve, labeled "Hydrogen-Air_gr
 
 Alternitavely, one could also clone the repo and run the scripts themselves, which should produce those same graphs.
 # Assumptions
-The premise of this project is to do the math behind a theoretical hydrogen converison of a two-stroke engine. Basically to see what would happen, how would the performance chnage, what would the temperatures, mass flow rates, pressures, etc., look like when compared to a conventional two-stroke engine running iso-octane fuel.
 
 Now, in order to complete this project in time (amidst other classes, coursework, research, and life), we make several important assumptions.
 
