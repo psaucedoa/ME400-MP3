@@ -12,11 +12,12 @@ Ideally all of these things would be nestled in functions and nice and presentab
 This will be cleaned up at some later data.
 
 # Install
-You're gonna need PYroMAT. Follow the installation instructions or do it the way you are most comfortable.
-See https://tbretl.github.io/ae353-sp22/setup#windows on how to set up python real nice with VSCode.
+Besides the usual python packages, you're gonna need PYroMat. Follow the installation instructions below (or do it the way you are most comfortable).
 
+See https://tbretl.github.io/ae353-sp22/setup#windows on how to set up python real nice with VSCode.
+See http://www.pyromat.org/download.html for PYroMat installation instructions.
 # Results
-Our graphs and figures are located in the folders abve, labeled "Hydrogen-Air_graphs" and "Iso-Octane_graphs."
+Our graphs and figures are located in the folders above, labeled "Hydrogen-Air_graphs" and "Iso-Octane_graphs."
 
 Alternitavely, one could also clone the repo and run the scripts themselves, which should produce those same graphs.
 # Assumptions
