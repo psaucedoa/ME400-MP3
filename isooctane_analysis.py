@@ -244,36 +244,37 @@ def SV(excess,t1, p1, points):
     p41 = air.p(T=t_14, v=v41_air)/1000
     
     return v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, \
-        p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14
+        p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14,\
+            s_air_1, s_air_2, s_air_3, s_air_4, kg_iso
 
-excesses = np.array([0.25, 0.5, 1])
+excesses = np.array([1, 0.5, 0.25])
 
 fig2 = plt.figure()
 c = 0
 for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
     if c == 0:
-        color = 'g'
+        color = 'r'
+        plt.annotate('1',xy=(v1_sp,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('2',xy=(v2_sp,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('3',xy=(v3_sp,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('4',xy=(v4_sp,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+
+        plt.plot(v1_sp, p1/1000, marker="o", label = f'V1 = {v1_sp[0]:.2f}[$m^3$]\nP1 = {p1/1000:.2f}[kPa]')
+        plt.plot(v2_sp, p2/1000, marker="o", label = f'V2 = {v2_sp[0]:.2f}[$m^3$]\nP2 = {p2/1000:.2f}[kPa]')
+        plt.plot(v3_sp, p3/1000, marker="o", label = f'V3 = {v3_sp[0]:.2f}[$m^3$]\nP3 = {p3/1000:.2f}[kPa]')
+        plt.plot(v4_sp, p4/1000, marker="o", label = f'V4 = {v4_sp[0]:.2f}[$m^3$]\nP4 = {p4[0]/1000:.2f}[kPa]')
     elif c==1:
         color = 'b'
     else:
-        color = 'r'
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14 = SV(e, t1, p1, 20)
+        color = 'g'
     plt.plot(v12_sp, p12,f'{color}--',linewidth=1.5, label=f'{e*100}% of Stoichiometric')
     plt.plot([v23_sp,v23_sp],[p2/1000,p3/1000],f'{color}',linewidth=1.5)
     plt.plot(v34_sp, p34,f'{color}--',linewidth=1.5)
     plt.plot([v41_sp[0],v41_sp[0]],[p4[0]/1000,p1/1000],f'{color}',linewidth=1.5)
+    
     c+=1
 
-
-plt.annotate('1',xy=(v1_sp,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate('2',xy=(v2_sp,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate('3',xy=(v3_sp,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-plt.annotate('4',xy=(v4_sp,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-
-plt.plot(v1_sp, p1/1000, marker="o", label = f'V1 = {v1_sp[0]:.2f}[$m^3$]\nP1 = {p1/1000:.2f}[kPa]')
-plt.plot(v2_sp, p2/1000, marker="o", label = f'V2 = {v2_sp[0]:.2f}[$m^3$]\nP2 = {p2/1000:.2f}[kPa]')
-plt.plot(v3_sp, p3/1000, marker="o", label = f'V3 = {v3_sp[0]:.2f}[$m^3$]\nP3 = {p3/1000:.2f}[kPa]')
-plt.plot(v4_sp, p4/1000, marker="o", label = f'V4 = {v4_sp[0]:.2f}[$m^3$]\nP4 = {p4[0]/1000:.2f}[kPa]')
 
 plt.grid()
 plt.legend()
@@ -287,40 +288,38 @@ plt.savefig(f'Iso-octane_graphs/P-V_specific.png')
 ###################
 #       TEMP      #
 ###################
+fig3 = plt.figure()
+
+excesses = np.array([1, 0.5, 0.25])
+c = 0
+for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    if c == 0:
+        color = 'r'
+        plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]')
+        plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2/1000:.2f}[kPa]')
+        plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3/1000:.2f}[kPa]')
+        plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]/1000:.2f}[kPa]')
+
+        plt.annotate('1',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('2',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('3',xy=(t3,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'g'
+    plt.plot(t_12, p12,f'{color}--',linewidth=1.5, label=f'{e*100}% of Stoichiometric')
+    plt.plot(t_23, p23,f'{color}--',linewidth=1.5)
+    plt.plot(t_34, p34,f'{color}--',linewidth=1.5)
+    plt.plot(t_14, p41,f'{color}--',linewidth=1.5)
+    c+=1
 
 #PLOTTING
-fig3 = plt.figure()
-plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]')
-plt.plot(t2, p2/1000, marker="o", label = f'T2 = {t2:.2f}[K]\nP2 = {p2/1000:.2f}[kPa]')
-plt.plot(t3, p3/1000, marker="o", label = f'T3 = {t3:.2f}[K]\nP3 = {p3/1000:.2f}[kPa]')
-plt.plot(t4, p4/1000, marker="o", label = f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]/1000:.2f}[kPa]')
-
-p12 = air.p(T=t_12, s=s_air_1)/1000
-p23 = air.p(T=t_23, v=v23_air)/1000
-p34 = air.p(T=t_34, s=s_air_3)/1000
-p41 = air.p(T=t_14, v=v41_air)/1000
-
-plt.plot(t_12, p12,'r--',linewidth=1.5)
-plt.plot(t_23, p23,'r--',linewidth=1.5)
-plt.plot(t_34, p34,'r--',linewidth=1.5)
-plt.plot(t_14, p41,'r--',linewidth=1.5)
-
-
-#plt.annotate(f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
-plt.annotate('1',xy=(t1,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-
-plt.annotate('2',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-#plt.annotate(f'T2 = {t2[0]:.2f}[K]\nP2 = {p2[0]/1000:.2f}[kPa]',xy=(t2,p2/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
-
-plt.annotate('3',xy=(t3,p3/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-#plt.annotate(f'T3 = {t3[0]:.2f}[K]\nP3 = {p3[0]/1000:.2f}[kPa]',xy=(t3,p3/1000),horizontalalignment='right', verticalalignment='top', fontsize=10)  
-
-plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-#plt.annotate(f'T4 = {t4[0]:.2f}[K]\nP4 = {p4[0]/1000:.2f}[kPa]',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='bottom', fontsize=10)  
 
 plt.xlabel('Temperature [K]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Iso-Octane-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T')
+plt.title(f'80cc Iso-Octane-Air Otto Cycle Simulation P-T')
 
 plt.grid()
 plt.legend()
@@ -335,83 +334,113 @@ plt.savefig(f'Iso-octane_graphs/P-T_{np.round((excess-1)*100)}%_excess.png')
 
 fig4 = plt.figure()
 
-plt.plot(s_air_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_air_1[0]:.2f}[kJ/kg]')
-plt.plot(s_air_2, t2, marker="o", label = f'T2 = {t2:.2f}[K]\ns2 = {s_air_2[0]:.2f}[kJ/kg]')
-plt.plot(s_air_3, t3, marker="o", label = f'T3 = {t3:.2f}[K]\ns3 = {s_air_3[0]:.2f}[kJ/kg]')
-plt.plot(s_air_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\ns4 = {s_air_4[0]:.2f}[kJ/kg]')
+c = 0
+for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    if c == 0:
+        color = 'r'
+        plt.plot(s_air_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_air_1[0]:.2f}[kJ/kg]')
+        plt.plot(s_air_2, t2, marker="o", label = f'T2 = {t2:.2f}[K]\ns2 = {s_air_2[0]:.2f}[kJ/kg]')
+        plt.plot(s_air_3, t3, marker="o", label = f'T3 = {t3:.2f}[K]\ns3 = {s_air_3[0]:.2f}[kJ/kg]')
+        plt.plot(s_air_4, t4, marker="o", label = f'T4 = {t4[0]:.2f}[K]\ns4 = {s_air_4[0]:.2f}[kJ/kg]')   
+        
+        plt.annotate('1',xy=(s_air_1, t1),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('2',xy=(s_air_2, t2),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('3',xy=(s_air_3, t3),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+        plt.annotate('4',xy=(s_air_4, t4),horizontalalignment='left', verticalalignment='top', fontsize=20)         
+         
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'g'
+
+    air_s_14 = air.s(T=t_14, v=v41_sp)
+    air_s_23 = air.s(T=t_23, v=v23_sp)
+    plt.plot([s_air_1[0],s_air_2[0]],[t1,t2],f'{color}',linewidth=1.5,  label=f'{e*100}% of Stoichiometric')
+    plt.plot([s_air_3[0],s_air_4[0]],[t3,t4[0]],f'{color}',linewidth=1.5)
+    plt.plot(air_s_14,t_14,f'{color}--',linewidth=1.5)
+    plt.plot(air_s_23,t_23,f'{color}--',linewidth=1.5)    
+    c+=1
 
 #LINES
-plt.plot([s_air_1[0],s_air_2[0]],[t1,t2],'r',linewidth=1.5)
-plt.plot([s_air_3[0],s_air_4[0]],[t3,t4[0]],'r',linewidth=1.5)
 
-air_s_14 = air.s(T=t_14, v=v41_air)
-air_s_23 = air.s(T=t_23, v=v23_air)
-
-
-gas_14 = (air_s_14)
-plt.plot(gas_14,t_14,'r--',linewidth=1.5)
-
-gas_23 = (air_s_23)
-plt.plot(gas_23,t_23,'r--',linewidth=1.5)
-
-
-plt.annotate('1',xy=(s_air_1, t1),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-
-plt.annotate('2',xy=(s_air_2, t2),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-
-plt.annotate('3',xy=(s_air_3, t3),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-#plt.annotate(f'T3 = {t3:.2f}[K]\nP3 = {s_3[0]:.2f}[kPa]',xy=(t3,s_3),horizontalalignment='right', verticalalignment='top', fontsize=10)  
-
-plt.annotate('4',xy=(s_air_4, t4),horizontalalignment='left', verticalalignment='top', fontsize=20)         
-#plt.annotate(f'T4 = {t4[0]:.2f}[K]\nP4 = {s_4[0]:.2f}[kPa]',xy=(t4,s_4),horizontalalignment='left', verticalalignment='baseline', fontsize=10)  
 
 plt.ylabel('Temperature [K]')
 plt.xlabel('Specific Entropy [kJ/K kg]')
-plt.title(f'80cc Iso-Octane-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T')
+plt.title(f'80cc Iso-Octane-Air Otto Cycle Simulation P-T')
 plt.grid()
 plt.legend()
 
 plt.ylim(0,5000)
 
-plt.savefig(f'Iso-octane_graphs/T-S_{np.round((excess-1)*100)}%_excess.png')
+plt.savefig(f'Iso-octane_graphs/T-S.png')
 # %%
 ###################
 #     RUNTIME     #
 ###################
 fig5 = plt.figure()
-duty_cycle = np.linspace(0.1,1,100)
-rps = 6000/60
-m_dot_iso = kg_iso*rps*duty_cycle
 
-rho_iso = 690 #[kg/m3]
 
-tank_vol = 1 #[liters]
-m_tot_iso = rho_iso*tank_vol/1000
+c = 0
+for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    if c == 0:
+        color = 'r'       
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'g' 
+    duty_cycle = np.linspace(0.1,1,100)
+    rps = 6000/60
+    m_dot_iso = kg_iso*rps*duty_cycle
+    rho_iso = 690 #[kg/m3]
+    tank_vol = 1 #[liters]
+    m_tot_iso = rho_iso*tank_vol/1000
+    runtime = (m_tot_iso/m_dot_iso)/60
+    plt.plot(duty_cycle, runtime/60, label=f'{e*100}% of Stoichiometric')
+    c+=1
 
-runtime = (m_tot_iso/m_dot_iso)/60
 
-plt.plot(duty_cycle, runtime)
 plt.xlabel('Duty Cycle')
-plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, {np.round((excess-1)*100)}% excess Iso-Octane Air')
+plt.ylabel('Runtime [hr]')
+plt.title(f'Runtime, Iso-Octane Air')
 plt.grid()
-plt.ylim(10,200)
+plt.ylim(0,15)
 plt.xlim(0.1,1)
-plt.savefig(f'Iso-octane_graphs/runtime_duty_cycle_{np.round((excess-1)*100)}%_excess.png')
+plt.legend()
+plt.savefig(f'Iso-octane_graphs/runtime_duty_cycle.png')
+
 # %%
 fig6 = plt.figure
-avg_rpm = np.linspace(1000,6000,100)
-rps = avg_rpm/60
-m_dot_iso_a = kg_iso*rps
 
-runtime = (m_tot_iso/m_dot_iso_a)/60
+c = 0
+for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    if c == 0:
+        color = 'r'       
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'g' 
+    avg_rpm = np.linspace(1000,6000,100)
+    rps = avg_rpm/60
+    rho_iso = 690 #[kg/m3]
+    tank_vol = 1 #[liters]
+    m_tot_iso = rho_iso*tank_vol/1000
+    m_dot_iso_a = kg_iso*rps
+    runtime = (m_tot_iso/m_dot_iso_a)/60
+    
+    plt.plot(avg_rpm, runtime/60, label=f'{e*100}% of Stoichiometric')
+    c+=1
+
 
 plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, {np.round((excess-1)*100)}% excess Iso-Octane Air at Given RPM')
+plt.title(f'Runtime, Iso-Octane Air at Given RPM')
 plt.grid()
-plt.ylim(10,200)
+plt.ylim(0,8)
 plt.xlim(1000,6000)
-plt.savefig(f'Iso-octane_graphs/runtime_rpm_{np.round((excess-1)*100)}%_excess.png')
+plt.legend()
+plt.savefig(f'Iso-octane_graphs/runtime_rpm.png')
 # %%
