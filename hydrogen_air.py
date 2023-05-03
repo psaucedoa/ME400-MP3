@@ -33,7 +33,7 @@ rho_air = H2.d(T=t1, p=p1)
 # %%
 
 #quick calculation to get molar fractions
-excess = 1.
+excess = 0.3
     #percent excess
 air_part = 1
 hydrogen = 0.21*2 * excess
@@ -143,7 +143,7 @@ gamma_avg_12 = (gamma_1 + gamma_2)/2
 cv_air_avg = 0.8735
 cv_H2_avg = 11.5
 #fuel_air = kg_H2 / kg_air
-t3 = t2 + Q*(kg_H2/excess)/(kg_air*cv_air_avg + (kg_H2*excess-kg_H2)*cv_H2_avg)
+t3 = t2 + Q*(kg_H2)/(kg_air*cv_air_avg)
 p3 = p2*(t3/t2)
 
 cv_air_3 = air.cv(T=t3, p=p3)
@@ -269,7 +269,7 @@ plt.legend()
 
 plt.xlabel('Volume [cc]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V')
 plt.savefig(f'Hydrogen-Air_graphs/P-V_{np.round((excess-1)*100)}_excess.png')
 #%%
 ###################
@@ -308,7 +308,7 @@ plt.legend()
 
 plt.xlabel(r'Specific Volume [$m^3$/kg]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-v Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-v')
 plt.ylim(-100,10000)
 plt.savefig(f'Hydrogen-Air_graphs/P-V_specific_{np.round((excess-1)*100)}_excess.png')
 #%%
@@ -348,7 +348,7 @@ plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='
 
 plt.xlabel('Temperature [K]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T')
 
 plt.grid()
 plt.legend()
@@ -396,7 +396,7 @@ plt.annotate('4',xy=(s_4, t4),horizontalalignment='left', verticalalignment='top
 
 plt.ylabel('Temperature [K]')
 plt.xlabel('Specific Entropy [kJ/K kg]')
-plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation T-S Diagram')
+plt.title(f'80cc Hydrogen-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation T-S')
 plt.grid()
 plt.legend()
 

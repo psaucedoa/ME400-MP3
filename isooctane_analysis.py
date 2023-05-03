@@ -37,24 +37,35 @@ n_O2 = 0.21*n
     #moles of oxygen present in air
 n_iso = n_O2/12.5
     #moles of iso-octane required for stoichiometric combustion
-kg_iso = n_iso*mw_iso/1000
+excess = 0.3
+    #excess value for iso_octane
+
+    
+def kilograms_iso(excess_percent):
     #kg of iso-octane reuired for stoichiometric combustion
+    moles_iso = n_iso
+    molecular_weight_iso = mw_iso
+    kg = moles_iso*molecular_weight_iso*excess_percent/1000
+    return kg
+    
 # %%
 ###################
 #      INTAKE     #
 ###################
 
-cv_air_1 = air.cv(T=t1, p=p1)
+def intake(t1, p1):
+    cv_air = air.cv(T=t1, p=p1)
     #volume specific heat at temperature t1
-cp_air_1 = air.cp(T=t1, p=p1)
+    cp_air = air.cp(T=t1, p=p1)
     #volume specific heat at temperature t1
-gamma_air_1 = cp_air_1/cv_air_1
+    gamma = cp_air/cv_air
     #finding gamma. Basicaly the same as assumed value
-
-s_air_1 = air.s(T=t1, p=p1)
+    s_air = air.s(T=t1, p=p1)
     #air entropy at state point 1
-h_air_1 = air.h(T=t1, p=p1)
+    h_air = air.h(T=t1, p=p1)
     #air enthlpy at state point 1
+    return cv_air, cp_air, gamma, s_air, h_air
+
 #%%
 ###################
 #   COMPRESSION   #
@@ -62,68 +73,75 @@ h_air_1 = air.h(T=t1, p=p1)
 
 gamma_avg = 1.3912
 
-p2 = p1 * r ** gamma_avg
-    #Finding stage 2 pressure through pressure ratio
-t2 = t1 * r**(gamma_avg-1)
-    #Finding stage 2 temp through adiabatic compression
+def compression(t1, p1):
+    p2 = p1 * r ** gamma_avg
+        #Finding stage 2 pressure through pressure ratio
+    t2 = t1 * r**(gamma_avg-1)
+        #Finding stage 2 temp through adiabatic compression
+    cv_air_2 = air.cv(T=t2, p=p2)
+        #volume specific heat at temperature t2
+    cp_air_2 = air.cp(T=t2, p=p2)
+        #volume specific heat at temperature t1
+    gamma_air_2 = cp_air_2/cv_air_2
+        #finding gamma. Basicaly the same as assumed value
 
-cv_air_2 = air.cv(T=t2, p=p2)
-    #volume specific heat at temperature t2
-cp_air_2 = air.cp(T=t2, p=p2)
-    #volume specific heat at temperature t1
-gamma_air_2 = cp_air_2/cv_air_2
-    #finding gamma. Basicaly the same as assumed value
+    s_air_2 = air.s(T=t2, p=p2)
+        #air entropy at state point 2
+    h_air_2 = air.h(T=t2, p=p2)
+        #H2 enthalpy at state point 2
+    
+    return cv_air_2, cp_air_2, gamma_air_2, s_air_2, h_air_2, p2, t2
+        #specific work required for compression
 
-s_air_2 = air.s(T=t2, p=p2)
-    #air entropy at state point 2
-h_air_2 = air.h(T=t2, p=p2)
-    #H2 enthalpy at state point 2
-
-wc = h_air_2 - h_air_1
-    #specific work required for compression
-
+#wc = h_air_2 - h_air_1
 #%%
 ###################
 #   COMBUSTION    #
 ###################
-cv_air_avg = 0.8735
-fuel_air = kg_iso / kg_air
-t3 = t2 + Q*kg_iso/(kg_air*cv_air_avg)
-p3 = p2*(t3/t2)
 
-cv_air_3 = air.cv(T=t3, p=p3)
-cp_air_3 = air.cp(T=t3, p=p3)
-h_air_3 = air.h(T=t3, p=p3)
-s_air_3 = air.s(T=t3, p=p3)
+def combustion(t2, p2, kg_iso, kg_air, Q):
+    cv_air_avg = 0.8735
+    t3 = t2 + Q*kg_iso/(kg_air*cv_air_avg)
+    p3 = p2*(t3/t2)
 
-gamma_air_3 = cp_air_3/cv_air_3
+    cv_air_3 = air.cv(T=t3, p=p3)
+    cp_air_3 = air.cp(T=t3, p=p3)
+    h_air_3 = air.h(T=t3, p=p3)
+    s_air_3 = air.s(T=t3, p=p3)
+
+    gamma_air_3 = cp_air_3/cv_air_3
+    return cv_air_3, cp_air_3, gamma_air_3, s_air_3, h_air_3, p3, t3
 #%%
 ###################
 #     EXHAUST     #
 ###################
+def exhaust(t3, p3, gamma_air_3):
+    p4 = p3*r**(-gamma_air_3)
+    t4 = t3*r**(1-gamma_air_3)
 
-p4 = p3*r**(-gamma_air_3)
-t4 = t3*r**(1-gamma_air_3)
-
-cv_air_4 = air.cv(T=t4, p=p4)
-cp_air_4 = air.cp(T=t4, p=p4)
-h_air_4 = air.h(T=t4, p=p4)
-s_air_4 = air.s(T=t4, p=p4)
-
-cv_avg = (cv_air_1+cv_air_2+cv_air_3+cv_air_4)/4
-gamma_air_4 = cp_air_4/cv_air_4
+    cv_air_4 = air.cv(T=t4, p=p4)
+    cp_air_4 = air.cp(T=t4, p=p4)
+    h_air_4 = air.h(T=t4, p=p4)
+    s_air_4 = air.s(T=t4, p=p4)
+    
+    gamma_air_4 = cp_air_4/cv_air_4
+    return cv_air_4, cp_air_4, gamma_air_4, s_air_4, h_air_4, p4, t4
 
 # %%
-W = cv_avg*( (t3-t2)-(t4-t1) )
 
-P_spec = W*rpm/60
-P = P_spec*(kg_air)
-print(f'kW = {P}')
+def power(t1, t2, t3, t4, cv_air_1, cv_air_2, cv_air_3, cv_air_4):
+    cv_avg = (cv_air_1+cv_air_2+cv_air_3+cv_air_4)/4
+    W = cv_avg*( (t3-t2)-(t4-t1) )
+
+    P_spec = W*rpm/60
+    P = P_spec*(kg_air)
+    print(f'kW = {P}')
+    return P
 #%%
 ###################
 #     VOLUME      #
 ###################
-
+'''
 l = 20
 t_12 = np.linspace(t1, t2, l)
 t_23 = np.linspace(t2, t3, l)
@@ -176,30 +194,76 @@ plt.legend()
 
 plt.xlabel('Volume [cc]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Iso-Octane-Air Stoichiometric Otto Cycle Simulation P-V Diagram')
-plt.savefig(f'Iso-octane_graphs/P-V_total.png')
+plt.title(f'80cc Iso-Octane-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-V')
+plt.savefig(f'Iso-octane_graphs/P-V_total_{np.round((excess-1)*100)}%_excess.png')
+'''
 # %%
 
 ###################
 #   SPECIFIC VOL  #
 ###################
 
-v12_sp = (v12_air)
-v23_sp = (v23_air)
-v34_sp = (v34_air)
-v41_sp = (v41_air)
+def SV(excess,t1, p1, points):
+    kg_iso = kilograms_iso(excess)
+    cv_air_1, cp_air_1, gamma_1, s_air_1, h_air_1 = intake(t1, p1)
+    cv_air_2, cp_air_2, gamma_2, s_air_2, h_air_2, p2, t2 = compression(t1, p1)
+    cv_air_3, cp_air_3, gamma_3, s_air_3, h_air_3, p3, t3 = combustion(t2, p2, kg_iso, kg_air, Q)
+    cv_air_4, cp_air_4, gamma_4, s_air_4, h_air_4, p4, t4 = exhaust(t3, p3, gamma_3)
+    P = power(t1, t2, t3, t4, cv_air_1, cv_air_2, cv_air_3, cv_air_4)
+    
+    l = points
+    
+    t_12 = np.linspace(t1, t2, l)
+    t_23 = np.linspace(t2, t3, l)
+    t_34 = np.linspace(t3, t4, l)
+    t_14 = np.linspace(t1, t4, l)
+    
+    v12_air = air.v(T=t_12, s=s_air_1)
+    v23_air = air.v(T=t2,   s=s_air_2)
+    v34_air = air.v(T=t_34, s=s_air_4)
+    v41_air = air.v(T=t4,   s=s_air_4)
+    
+    v12_sp = (v12_air)
+    v23_sp = (v23_air)
+    v34_sp = (v34_air)
+    v41_sp = (v41_air)
 
-v1_sp = (v1_air)
-v2_sp = (v2_air)
-v3_sp = (v3_air)
-v4_sp = (v4_air)
+    v1_air = air.v(T=t1, s=s_air_1)
+    v2_air = air.v(T=t2, s=s_air_2)
+    v3_air = air.v(T=t3, s=s_air_3)
+    v4_air = air.v(T=t4, s=s_air_4)
+
+    v1_sp = (v1_air)
+    v2_sp = (v2_air)
+    v3_sp = (v3_air)
+    v4_sp = (v4_air)
+    
+    p12 = air.p(T=t_12, s=s_air_1)/1000
+    p23 = air.p(T=t_23, v=v23_air)/1000
+    p34 = air.p(T=t_34, s=s_air_3)/1000
+    p41 = air.p(T=t_14, v=v41_air)/1000
+    
+    return v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, \
+        p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14
+
+excesses = np.array([0.25, 0.5, 1])
 
 fig2 = plt.figure()
+c = 0
+for e in excesses:
+    if c == 0:
+        color = 'g'
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'r'
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14 = SV(e, t1, p1, 20)
+    plt.plot(v12_sp, p12,f'{color}--',linewidth=1.5, label=f'{e*100}% of Stoichiometric')
+    plt.plot([v23_sp,v23_sp],[p2/1000,p3/1000],f'{color}',linewidth=1.5)
+    plt.plot(v34_sp, p34,f'{color}--',linewidth=1.5)
+    plt.plot([v41_sp[0],v41_sp[0]],[p4[0]/1000,p1/1000],f'{color}',linewidth=1.5)
+    c+=1
 
-plt.plot(v12_sp, p12,'r--',linewidth=1.5)
-plt.plot([v23_sp,v23_sp],[p2/1000,p3/1000],'r',linewidth=1.5)
-plt.plot(v34_sp, p34,'r--',linewidth=1.5)
-plt.plot([v41_sp[0],v41_sp[0]],[p4[0]/1000,p1/1000],'r',linewidth=1.5)
 
 plt.annotate('1',xy=(v1_sp,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
 plt.annotate('2',xy=(v2_sp,p2/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
@@ -216,7 +280,7 @@ plt.legend()
 
 plt.xlabel(r'Specific Volume [$m^3$/kg]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Iso-Octane-Air Stoichiometric Otto Cycle Simulation P-v Diagram')
+plt.title(f'80cc Iso-Octane-Air Otto Cycle Simulation P-v')
 plt.ylim(-100,10000)
 plt.savefig(f'Iso-octane_graphs/P-V_specific.png')
 # %%
@@ -256,14 +320,14 @@ plt.annotate('4',xy=(t4,p4/1000),horizontalalignment='left', verticalalignment='
 
 plt.xlabel('Temperature [K]')
 plt.ylabel('Pressure [kPa]')
-plt.title(f'80cc Iso-Octane-Air Stoichiometric Otto Cycle Simulation P-T Diagram')
+plt.title(f'80cc Iso-Octane-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T')
 
 plt.grid()
 plt.legend()
 plt.xlim(0,5000)
 plt.ylim(0,10000)
 
-plt.savefig(f'Iso-octane_graphs/P-T.png')
+plt.savefig(f'Iso-octane_graphs/P-T_{np.round((excess-1)*100)}%_excess.png')
 # %%
 ###################
 #     ENTROPY     #
@@ -303,13 +367,13 @@ plt.annotate('4',xy=(s_air_4, t4),horizontalalignment='left', verticalalignment=
 
 plt.ylabel('Temperature [K]')
 plt.xlabel('Specific Entropy [kJ/K kg]')
-plt.title(f'80cc Iso-Octane-Air Stoichiometric Otto Cycle Simulation P-T Diagram')
+plt.title(f'80cc Iso-Octane-Air {np.round((excess-1)*100)}% excess Otto Cycle Simulation P-T')
 plt.grid()
 plt.legend()
 
 plt.ylim(0,5000)
 
-plt.savefig(f'Iso-octane_graphs/T-S.png')
+plt.savefig(f'Iso-octane_graphs/T-S_{np.round((excess-1)*100)}%_excess.png')
 # %%
 ###################
 #     RUNTIME     #
@@ -329,11 +393,11 @@ runtime = (m_tot_iso/m_dot_iso)/60
 plt.plot(duty_cycle, runtime)
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, Stoichiometric Iso-Octane Air')
+plt.title(f'Runtime, {np.round((excess-1)*100)}% excess Iso-Octane Air')
 plt.grid()
 plt.ylim(10,200)
 plt.xlim(0.1,1)
-plt.savefig(f'Iso-octane_graphs/runtime_duty_cycle.png')
+plt.savefig(f'Iso-octane_graphs/runtime_duty_cycle_{np.round((excess-1)*100)}%_excess.png')
 # %%
 fig6 = plt.figure
 avg_rpm = np.linspace(1000,6000,100)
@@ -345,9 +409,9 @@ runtime = (m_tot_iso/m_dot_iso_a)/60
 plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, Stoichiometric Iso-Octane Air at Given RPM')
+plt.title(f'Runtime, {np.round((excess-1)*100)}% excess Iso-Octane Air at Given RPM')
 plt.grid()
 plt.ylim(10,200)
 plt.xlim(1000,6000)
-plt.savefig(f'Iso-octane_graphs/runtime_rpm.png')
+plt.savefig(f'Iso-octane_graphs/runtime_rpm_{np.round((excess-1)*100)}%_excess.png')
 # %%
