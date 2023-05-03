@@ -142,6 +142,8 @@ def power(t1, t2, t3, t4, cv_air_1, cv_air_2, cv_air_3, cv_air_4):
 #     VOLUME      #
 ###################
 '''
+#DEPRECATED FOR NOW. TOTAL VOLUME
+
 l = 20
 t_12 = np.linspace(t1, t2, l)
 t_23 = np.linspace(t2, t3, l)
