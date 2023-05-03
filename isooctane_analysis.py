@@ -471,6 +471,5 @@ plt.ylabel('Power [kW]')
 plt.title('Power Versus Percent Iso-Octane of Stoichiometric')
 plt.grid()
 plt.legend()
-
-
+plt.savefig(f'Iso-octane_graphs/power_v_e.png')
 # %%
