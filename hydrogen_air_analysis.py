@@ -551,6 +551,8 @@ for e in excesses:
 
     plt.plot(e, P,'o', label=f'Power={np.round(P,2)}kW \n {e*100}% of Stoichiometric')
     
+    print(f'Hydrogen per Cycle at {np.round(e*100)}% of stoich = {kg_H2} [kg]')
+    
 plt.xlabel('Percent Hydrogen of Stoichiometric')
 plt.ylabel('Power [kW]')
 plt.title('Power Versus Percent Hydrogen of Stoichiometric')
