@@ -466,6 +466,8 @@ for e in excesses:
 
     plt.plot(e, P,'o', label=f'Power={np.round(P,2)}kW \n {e*100}% of Stoichiometric')
     
+    print(f'Iso-Oct per Cycle at {np.round(e*100)}% of stoich = {kg_iso} [kg]')
+    
 plt.xlabel('Percent Iso-octane of Stoichiometric')
 plt.ylabel('Power [kW]')
 plt.title('Power Versus Percent Iso-Octane of Stoichiometric')
