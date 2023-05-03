@@ -247,14 +247,15 @@ def SV(excess,t1, p1, points):
     
     return v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, \
         p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14,\
-            s_air_1, s_air_2, s_air_3, s_air_4, kg_iso
+            s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P
 
 excesses = np.array([1, 0.5, 0.25])
 
 fig2 = plt.figure()
 c = 0
 for e in excesses:
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P= SV(e, t1, p1, 20)
     if c == 0:
         color = 'r'
         plt.annotate('1',xy=(v1_sp,p1/1000),horizontalalignment='left', verticalalignment='top', fontsize=20)         
@@ -295,7 +296,8 @@ fig3 = plt.figure()
 excesses = np.array([1, 0.5, 0.25])
 c = 0
 for e in excesses:
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P = SV(e, t1, p1, 20)
     if c == 0:
         color = 'r'
         plt.plot(t1, p1/1000, marker="o", label = f'T1 = {t1:.2f}[K]\nP1 = {p1/1000:.2f}[kPa]')
@@ -338,7 +340,8 @@ fig4 = plt.figure()
 
 c = 0
 for e in excesses:
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P = SV(e, t1, p1, 20)
     if c == 0:
         color = 'r'
         plt.plot(s_air_1, t1, marker="o", label = f'T1 = {t1:.2f}[K]\ns1 = {s_air_1[0]:.2f}[kJ/kg]')
@@ -385,7 +388,8 @@ fig5 = plt.figure()
 
 c = 0
 for e in excesses:
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P = SV(e, t1, p1, 20)
     if c == 0:
         color = 'r'       
     elif c==1:
@@ -417,7 +421,8 @@ fig6 = plt.figure
 
 c = 0
 for e in excesses:
-    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41, t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso = SV(e, t1, p1, 20)
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P = SV(e, t1, p1, 20)
     if c == 0:
         color = 'r'       
     elif c==1:
@@ -445,4 +450,27 @@ plt.ylim(0,8)
 plt.xlim(1000,6000)
 plt.legend()
 plt.savefig(f'Iso-octane_graphs/runtime_rpm.png')
+# %%
+fig7 = plt.figure()
+
+c = 0
+for e in excesses:
+    v12_sp, v23_sp, v34_sp, v41_sp, v1_sp, v2_sp, v3_sp, v4_sp, p1, p2, p3, p4, p12, p23, p34, p41,\
+        t1, t2, t3, t4, t_12, t_23, t_34, t_14, s_air_1, s_air_2, s_air_3, s_air_4, kg_iso, P = SV(e, t1, p1, 20)
+    if c == 0:
+        color = 'r'       
+    elif c==1:
+        color = 'b'
+    else:
+        color = 'g' 
+
+    plt.plot(e, P,'o', label=f'Power={np.round(P,2)}kW \n {e*100}% of Stoichiometric')
+    
+plt.xlabel('Percent Iso-octane of Stoichiometric')
+plt.ylabel('Power [kW]')
+plt.title('Power Versus Percent Iso-Octane of Stoichiometric')
+plt.grid()
+plt.legend()
+
+
 # %%
