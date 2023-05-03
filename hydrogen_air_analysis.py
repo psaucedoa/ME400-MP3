@@ -491,15 +491,16 @@ for e in excesses:
     tank_size = tank_pressure*tank_vol/1.01325 #[liters at stp]
     m_tot_H2 = H2.d(T=t1, p=p1)*tank_size/1000
     runtime = (m_tot_H2/m_dot_H2)/60
-    plt.plot(duty_cycle, runtime/60, label=f'{e*100}% of Stoichiometric, 6 liter, 350 bar tank')
+    plt.plot(duty_cycle, runtime/60, label=f'{e*100}% of Stoichiometric')
     c+=1
     
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [hr]')
-plt.title(f'Runtime, Hydrogen-Ai with Duty Cycle')
+plt.title(f'Runtime, Hydrogen-Ai with Duty Cycle \n 6 liter, 350 bar tank')
 plt.grid()
 plt.ylim(0,15)
 plt.xlim(0.1,1)
+plt.legend()
 plt.savefig(f'Hydrogen-Air_graphs/runtime_duty_cycle.png')
 # %%
 fig6 = plt.figure()
@@ -522,13 +523,14 @@ for e in excesses:
     rps = avg_rpm/60
     m_dot_H2 = kg_H2*rps
     runtime = (m_tot_H2/m_dot_H2)/60
-    plt.plot(avg_rpm, runtime/60)
+    plt.plot(avg_rpm, runtime/60, label=f'{e*100}% of Stoichiometric')
     c+=1
     
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [hr]')
 plt.grid()
-plt.title(f'Runtime, Hydrogen-Air at given RPM')
+plt.legend()
+plt.title(f'Runtime, Hydrogen-Air at given RPM \n 6 liter, 350 bar tank')
 plt.ylim(0,8)
 plt.xlim(1000,6000)
 plt.savefig(f'Hydrogen-Air_graphs/runtime_rpm.png')

@@ -409,7 +409,7 @@ for e in excesses:
 
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [hr]')
-plt.title(f'Runtime, Iso-Octane Air with Duty Cycle')
+plt.title(f'Runtime, Iso-Octane Air with Duty Cycle \n 1 Liter Tank')
 plt.grid()
 plt.ylim(0,15)
 plt.xlim(0.1,1)
@@ -444,7 +444,7 @@ for e in excesses:
 plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
 plt.ylabel('Runtime [min]')
-plt.title(f'Runtime, Iso-Octane Air at Given RPM')
+plt.title(f'Runtime, Iso-Octane Air at Given RPM \n 1 Liter Tank')
 plt.grid()
 plt.ylim(0,8)
 plt.xlim(1000,6000)
