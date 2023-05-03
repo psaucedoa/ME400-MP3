@@ -328,7 +328,7 @@ plt.legend()
 plt.xlim(0,5000)
 plt.ylim(0,10000)
 
-plt.savefig(f'Iso-octane_graphs/P-T_{np.round((excess-1)*100)}%_excess.png')
+plt.savefig(f'Iso-octane_graphs/P-T.png')
 # %%
 ###################
 #     ENTROPY     #
@@ -405,7 +405,7 @@ for e in excesses:
 
 plt.xlabel('Duty Cycle')
 plt.ylabel('Runtime [hr]')
-plt.title(f'Runtime, Iso-Octane Air')
+plt.title(f'Runtime, Iso-Octane Air with Duty Cycle')
 plt.grid()
 plt.ylim(0,15)
 plt.xlim(0.1,1)
