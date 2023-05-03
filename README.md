@@ -1,3 +1,5 @@
+### Full report above! Click "View code" to find our pdf!
+
 # ME400-MP3
 Files for Mini-Project 3 of Professor Leon Liebenberg's ME400 "Energy Conversion Systems" class, Spring 2023.
 
