@@ -443,7 +443,7 @@ for e in excesses:
 
 plt.plot(avg_rpm, runtime)
 plt.xlabel('Average RPM')
-plt.ylabel('Runtime [min]')
+plt.ylabel('Runtime [hr]')
 plt.title(f'Runtime, Iso-Octane Air at Given RPM \n 1 Liter Tank')
 plt.grid()
 plt.ylim(0,8)
