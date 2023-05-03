@@ -5,11 +5,10 @@ The premise of this project is to do the math behind a theoretical hydrogen conv
 
 Ideally all of these things would be nestled in functions and nice and presentable but unfrotunately that is a function of time which I sadly do not have haha.
 # Files
-"Hydrogen-Rich" is a basic combustion process with excess hydrogen.
-"Hydrogen air analysis" is basic combustion with stoichiometric ratios.
-"Iso-octane analysis" is ... stoichiometric.
+"Hydrogen_air_an" is a basic combustion process with varying levels of hydrogen.
+"Isooctane_analysis" is basic combustion process with varying lecels of hydrogen.
 
-This will be cleaned up at some later data.
+This will be cleaned up further at some later data.
 
 # Install
 Besides the usual python packages, you're gonna need PYroMat. Follow the installation instructions below (or do it the way you are most comfortable).
