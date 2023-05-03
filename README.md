@@ -36,7 +36,7 @@ We assume the full combustion of reactants in the combustion chamber. This is im
 
 ### Intake Conditions at STP
 
-We assume the gasses are at standard temperature and pressure at the intake. This may not necessarily be true for engines in the real world. Some may boost their pressures above ambient before compression. For example, many two-stroke engines use the downstroke of the piston to slightly compress the air-fuel misture in the cranckcase, pushing it into the combustion chamber. Other engines may use a vacuum to pull air into the combustion chamber, and as a result operate with intake pressures below ambient. This is not complex to model or account for, but we have to base our intake on something we know (STP) instead of some random intake pressure which may vary from engine to engine.
+We assume the gasses are at standard temperature and pressure at the intake. This may not necessarily be true for engines in the real world. Some may boost their pressures above ambient before compression. For example, many two-stroke engines use the downstroke of the piston to slightly compress the air-fuel mixture in the cranckcase, pushing it into the combustion chamber. Other engines may use a vacuum to pull air into the combustion chamber, and as a result operate with intake pressures below ambient. This is not complex to model or account for, but we have to base our intake on something we know (STP) instead of some random intake pressure which may vary from engine to engine.
 
 ### Iso-Octane Powered Engine is an Ideal Air Cycle
 
