@@ -3,10 +3,9 @@ message: "Hi, if you found this stuff usefull for your project, feel free to cit
 authors:
   - family-names: Saucedo
     given-names: Arturo
-    orcid: https://orcid.org/1234-5678-9101-1121
+    orcid:
   - family-names: Lopez
     given-names: Javier
-    orcid: 
 title: "ME400 MP3 Software"
 version: 
 doi:
